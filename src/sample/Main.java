@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -21,7 +22,7 @@ public class Main extends Application {
         //creating the player object
         sprite = new Sprite(width, height);
 
-        //using the dog object to load an image into an imageview and ensuring it is the correct size.
+        //using the sprite object to load an image into an imageview and ensuring it is the correct size.
         Image image = new Image(getClass().getResource(sprite.getLocation()).toExternalForm());
         imageView = new ImageView(image);
         imageView.setPreserveRatio(false);
@@ -29,7 +30,7 @@ public class Main extends Application {
         imageView.setFitHeight(sprite.getPICTURESIZE());
         imageView.setCache(true);//to improve performance
 
-        //putting the dog in the starting position (centre of the scene)
+        //putting the sprite in the starting position (centre of the scene)
         drawPlayer();
 
         //group to put the player image into
@@ -42,6 +43,23 @@ public class Main extends Application {
         primaryStage.setTitle("Automatic Sprite Movement");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        //timer
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                sprite.move();
+                sprite.updateMove();
+                drawPlayer();
+
+//                try {
+//                    Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+            }
+        };
+        timer.start();
     }
 
     public void drawPlayer() {
