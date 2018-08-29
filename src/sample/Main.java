@@ -18,18 +18,20 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
     private int width=500;//width and height of the scene
     private int height=500;
-    private Sprite sprite;
+    //private Sprite sprite;
+    private Sprite[] sprites;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        //creating the sprite object
-        sprite = new Sprite(width, height);
+    public void start(Stage primaryStage) throws Exception {
+        sprites = new Sprite[10];//how many sprites you desire
+        Group playArea = new Group();//to put images onto
 
-        //putting the sprite in the starting position (centre of the scene)
-        sprite.drawPlayer();
-
-        //group to put the player image into
-        Group playArea = new Group(sprite.imageView);
+        //creating two sprite objects
+        for (int i = 0; i<sprites.length; i++){
+            sprites[i] = new Sprite(width, height);
+            sprites[i].drawPlayer();
+            playArea.getChildren().addAll(sprites[i].imageView);
+        }
 
         //putting everything onto the scene
         Scene scene = new Scene(playArea, width, height, Color.GREEN);
@@ -53,7 +55,10 @@ public class Main extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                sprite.updateLocation();//moves and redraws the player on the scene.
+                //sprite.updateLocation();//moves and redraws the player on the scene.
+                for(int i = 0; i<sprites.length; i++) {
+                    sprites[i].updateLocation();
+                }
             }
         };
         timer.start();
