@@ -1,5 +1,15 @@
 package sample;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+
+/**
+ * Sprite class which contains attributes for its location on the screen,
+ * the direction it should be moving, its speed and the image used.
+ * @author Charlie Cox
+ * @version 29/08/2018
+ */
 public class Sprite {
     private String location = "/Sprite.jpg";
     private int xPos;
@@ -8,44 +18,45 @@ public class Sprite {
     private int sceneHeight;
     private static final int PICTURESIZE = 30;
     boolean up, down, left, right;
-    private int speed = 2;
+    private int speed = 2;//TODO make it possible for the user to change the speed
+    private ChangeDirectionThread changeDirectionThread;
+    ImageView imageView;
 
+    /**
+     * Constructor
+     * @param sceneWidth The width of the scene being used
+     * @param sceneHeight The height of the scene being used
+     */
     public Sprite(int sceneWidth, int sceneHeight) {
+
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
 
         this.xPos = (sceneWidth/2)-(PICTURESIZE /2);
         this.yPos = (sceneHeight/2)-(PICTURESIZE /2);
+
+        Image image = new Image(getClass().getResource(this.location).toExternalForm());
+        this.imageView = new javafx.scene.image.ImageView(image);
+        imageView.setPreserveRatio(false);
+        imageView.setFitWidth(this.PICTURESIZE);
+        imageView.setFitHeight(this.PICTURESIZE);
+        imageView.setCache(true);//to improve performance
+
+        changeDirectionThread = new ChangeDirectionThread(this);
+        changeDirectionThread.start();
     }
 
-    public int getxPos() {
-        return this.xPos;
-    }
-
-    public int getyPos() {
-        return this.yPos;
-    }
-
-    public String getLocation() {
-        return this.location;
-    }
-
-    public int getSceneWidth() {
-        return this.sceneWidth;
-    }
-
-    public int getSceneHeight() {
-        return this.sceneHeight;
-    }
-
-    public int getPICTURESIZE() {
-        return this.PICTURESIZE;
+    public void drawPlayer() {
+        imageView.relocate(xPos, yPos);
     }
 
     /**
+     * Changes the direction of the sprite by changing the values of the boolean variables
+     * left, right, up and down.
+     *
      * Directions - 0=left, 1=upleft, 2=up, 3=upright, 4=right, 5=downright, 6=down, 7=downleft
      */
-    public void move() {
+    public synchronized void changeDirection() {
         int direction = (int) Math.round(Math.random() * 7);
 
         switch (direction) {
@@ -107,8 +118,8 @@ public class Sprite {
             }
             case 7: {//downleft
                 System.out.println("downleft");
-                left = false;
-                right = true;
+                left = true;
+                right = false;
                 up = false;
                 down = true;
                 break;
@@ -116,7 +127,10 @@ public class Sprite {
         }
     }
 
-    public void updateMove() {
+    /**
+     * Updates the variables containing the location (x and y positions) on the scene.
+     */
+    public synchronized void updateLocation() {
         if (up)
             updateUp();
 
@@ -132,45 +146,53 @@ public class Sprite {
         /**
          * Updates the y position so the player moves up the screen but does not leave the screen.
          */
-        public void updateUp () {
+        public synchronized void updateUp () {
             //checks whether it is at the end of the screen or not
             if (this.yPos - speed < 0) {
                 return;
             } else {
                 this.yPos -= speed;
             }
+            //main.drawPlayer();
+            drawPlayer();
         }
 
         /**
          * Updates the y position so the player moves down the screen but does not leave the screen.
          */
-        public void updateDown() {
+        public synchronized void updateDown() {
              if (this.yPos + speed + PICTURESIZE > this.sceneHeight) {
                 return;
             } else {
                 this.yPos+=speed;
             }
+            //main.drawPlayer();
+            drawPlayer();
         }
 
         /**
          * Updates the x position so the player moves left along the screen but does not leave the screen.
          */
-        public void updateLeft() {
+        public synchronized void updateLeft() {
             if(this.xPos-speed<0) {
                 return;
             } else {
                 this.xPos-=speed;
             }
+            //main.drawPlayer();
+            drawPlayer();
         }
 
         /**
          * Updates the x position so the player moves right along the screen but does not leave the screen.
          */
-        public void updateRight() {
+        public synchronized void updateRight() {
             if(this.xPos+speed+PICTURESIZE>this.sceneWidth) {
                 return;
             } else {
                 this.xPos+=speed;
             }
+            //main.drawPlayer();
+            drawPlayer();
         }
     }
