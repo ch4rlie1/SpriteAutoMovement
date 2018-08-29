@@ -18,7 +18,6 @@ import javafx.stage.WindowEvent;
 public class Main extends Application {
     private int width=500;//width and height of the scene
     private int height=500;
-    //private Sprite sprite;
     private Sprite[] sprites;
 
     @Override
@@ -26,7 +25,7 @@ public class Main extends Application {
         sprites = new Sprite[10];//how many sprites you desire
         Group playArea = new Group();//to put images onto
 
-        //creating two sprite objects
+        //creating sprite objects
         for (int i = 0; i<sprites.length; i++){
             sprites[i] = new Sprite(width, height);
             sprites[i].drawPlayer();

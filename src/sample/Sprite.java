@@ -149,7 +149,7 @@ public class Sprite {
         public synchronized void updateUp () {
             //checks whether it is at the end of the screen or not
             if (this.yPos - speed < 0) {
-                return;
+                this.yPos -= 0;
             } else {
                 this.yPos -= speed;
             }
@@ -162,7 +162,7 @@ public class Sprite {
          */
         public synchronized void updateDown() {
              if (this.yPos + speed + PICTURESIZE > this.sceneHeight) {
-                return;
+                this.yPos = sceneHeight-PICTURESIZE;
             } else {
                 this.yPos+=speed;
             }
@@ -175,7 +175,7 @@ public class Sprite {
          */
         public synchronized void updateLeft() {
             if(this.xPos-speed<0) {
-                return;
+                this.xPos = 0;
             } else {
                 this.xPos-=speed;
             }
@@ -188,7 +188,7 @@ public class Sprite {
          */
         public synchronized void updateRight() {
             if(this.xPos+speed+PICTURESIZE>this.sceneWidth) {
-                return;
+                this.xPos = sceneWidth - PICTURESIZE;
             } else {
                 this.xPos+=speed;
             }
