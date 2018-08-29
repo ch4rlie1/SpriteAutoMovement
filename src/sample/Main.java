@@ -10,6 +10,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Main class which initialises the scene and sprites.
+ * @author Charlie Cox
+ * @version 29/09/2018
+ */
 public class Main extends Application {
     private int width=500;//width and height of the scene
     private int height=500;
