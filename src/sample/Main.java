@@ -10,6 +10,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Main class which initialises the scene and sprites.
  * @author Charlie Cox
@@ -24,6 +27,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         sprites = new Sprite[10];//how many sprites you desire
         Group playArea = new Group();//to put images onto
+
+        //creating the thread pool
+        ExecutorService pool = Executors.newCachedThreadPool();
 
         //creating sprite objects
         for (int i = 0; i<sprites.length; i++){
@@ -49,6 +55,10 @@ public class Main extends Application {
                 System.exit(0);
             }
         });
+
+        //put all sprites into the pool
+        for(int i = 0; i<sprites.length; i++)
+            pool.submit(new ChangeDirectionThread(sprites[i]));
 
         //timer
         AnimationTimer timer = new AnimationTimer() {

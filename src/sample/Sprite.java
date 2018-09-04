@@ -3,6 +3,9 @@ package sample;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 
 /**
  * Sprite class which contains attributes for its location on the screen,
@@ -42,8 +45,11 @@ public class Sprite {
         imageView.setFitHeight(this.PICTURESIZE);
         imageView.setCache(true);//to improve performance
 
-        changeDirectionThread = new ChangeDirectionThread(this);
-        changeDirectionThread.start();
+//        changeDirectionThread = new ChangeDirectionThread(this);
+//        changeDirectionThread.start();
+
+        //ExecutorService pool = Executors.newFixedThreadPool(5);
+        //pool.submit(new ChangeDirectionThread(this));
     }
 
     public void drawPlayer() {
@@ -56,7 +62,7 @@ public class Sprite {
      *
      * Directions - 0=left, 1=upleft, 2=up, 3=upright, 4=right, 5=downright, 6=down, 7=downleft
      */
-    public synchronized void changeDirection() {
+    public synchronized void changeDirection() throws InterruptedException {
         int direction = (int) Math.round(Math.random() * 7);
 
         switch (direction) {
@@ -153,7 +159,6 @@ public class Sprite {
             } else {
                 this.yPos -= speed;
             }
-            //main.drawPlayer();
             drawPlayer();
         }
 
@@ -166,7 +171,6 @@ public class Sprite {
             } else {
                 this.yPos+=speed;
             }
-            //main.drawPlayer();
             drawPlayer();
         }
 
@@ -179,7 +183,6 @@ public class Sprite {
             } else {
                 this.xPos-=speed;
             }
-            //main.drawPlayer();
             drawPlayer();
         }
 
@@ -192,7 +195,6 @@ public class Sprite {
             } else {
                 this.xPos+=speed;
             }
-            //main.drawPlayer();
             drawPlayer();
         }
     }

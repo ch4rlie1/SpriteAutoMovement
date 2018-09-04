@@ -5,10 +5,10 @@ package sample;
  * @author Charlie Cox
  * @version 29/08/2019
  */
-public class ChangeDirectionThread extends Thread {
+public class ChangeDirectionThread implements Runnable {
     private Sprite sprite;
 
-    /**
+        /**
      * Constructor
      * @param s Sprite
      */
@@ -17,19 +17,18 @@ public class ChangeDirectionThread extends Thread {
     }
 
     /**
-     * Run method - changes the direction that the sprite travels in
+     * Run method - changes the direction that the sprite travels in once a second
      */
     public void run() {
-
         while (true) {
             //update the Sprite booleans
-            sprite.changeDirection();
-
             try {
-                Thread.sleep(1000);
+                sprite.changeDirection();
+                Thread.sleep(Math.round(100+(900*Math.random())));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+
 }
