@@ -44,12 +44,6 @@ public class Sprite {
         imageView.setFitWidth(this.PICTURESIZE);
         imageView.setFitHeight(this.PICTURESIZE);
         imageView.setCache(true);//to improve performance
-
-//        changeDirectionThread = new ChangeDirectionThread(this);
-//        changeDirectionThread.start();
-
-        //ExecutorService pool = Executors.newFixedThreadPool(5);
-        //pool.submit(new ChangeDirectionThread(this));
     }
 
     public void drawPlayer() {
@@ -156,6 +150,8 @@ public class Sprite {
             //checks whether it is at the end of the screen or not
             if (this.yPos - speed < 0) {
                 this.yPos -= 0;
+                up=false;
+                down=true;
             } else {
                 this.yPos -= speed;
             }
@@ -168,6 +164,8 @@ public class Sprite {
         public synchronized void updateDown() {
              if (this.yPos + speed + PICTURESIZE > this.sceneHeight) {
                 this.yPos = sceneHeight-PICTURESIZE;
+                 down=false;
+                 up=true;
             } else {
                 this.yPos+=speed;
             }
@@ -180,6 +178,8 @@ public class Sprite {
         public synchronized void updateLeft() {
             if(this.xPos-speed<0) {
                 this.xPos = 0;
+                left=false;
+                right=true;
             } else {
                 this.xPos-=speed;
             }
@@ -192,6 +192,8 @@ public class Sprite {
         public synchronized void updateRight() {
             if(this.xPos+speed+PICTURESIZE>this.sceneWidth) {
                 this.xPos = sceneWidth - PICTURESIZE;
+                right=false;
+                left=true;
             } else {
                 this.xPos+=speed;
             }
